@@ -229,13 +229,12 @@ h2.section-title { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 18px; }
 .fact-card ul { margin: 0; padding-left: 18px; color: var(--ink-muted); font-size: 0.92rem; }
 .fact-card li { margin-bottom: 6px; }
 
-/* ---------- Program / elevation traverse ---------- */
 /* ---------- Schedule (agenda list) ---------- */
 .agenda {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 28px;
-  margin-top: 30px;
+  margin: 30px 12px 0;
 }
 @media (max-width: 760px) { .agenda { grid-template-columns: 1fr; } }
 
@@ -406,13 +405,6 @@ footer.site-footer .wrap {
 footer.site-footer a { color: #d8e0da; }
 footer.site-footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
 
-.trail-marker {
-  opacity: 0.55;
-  font-size: 0.95rem;
-  transition: opacity 0.2s ease;
-}
-.trail-marker:hover { opacity: 1; }
-
 /* ---------- Keynote spotlight ---------- */
 .keynote {
   background: var(--pine);
@@ -456,113 +448,23 @@ footer.site-footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
   margin-bottom: 6px;
 }
 
-.keynote .keynote-talk {
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #cfe6f4;
-  margin-bottom: 12px;
-}
-
 .keynote .keynote-bio {
   color: #d3dde3;
   font-size: 0.92rem;
   max-width: 640px;
-  margin-bottom: 16px;
-}
-
-.keynote a.keynote-link {
-  color: var(--aspen);
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-decoration: none;
-}
-.keynote a.keynote-link:hover { text-decoration: underline; }
-
-/* ---------- Pretalx embed ---------- */
-.pretalx-embed-wrap {
-  margin-top: 28px;
-}
-pretalx-schedule {
-  display: block;
-  width: 100%;
-  min-height: 400px;
-}
-.pretalx-widget {
-  background: var(--paper-alt);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 20px;
-  text-align: center;
-  color: var(--ink-muted);
-  font-size: 0.9rem;
-}
-.pretalx-widget a { color: var(--aspen-deep); font-weight: 600; }
-
-
-.agenda {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px;
-  margin-top: 30px;
-}
-@media (max-width: 760px) { .agenda { grid-template-columns: 1fr; } }
-
-.agenda-day h3 {
-  font-size: 1.4rem;
-  border-bottom: 2px solid var(--contour);
-  padding-bottom: 10px;
-  margin-bottom: 4px;
-}
-.agenda-day .date-sub {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--ink-muted);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   margin-bottom: 14px;
-  display: block;
 }
 
-.agenda-item {
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 14px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
+.keynote .keynote-talk {
+  margin-top: 6px;
+  font-size: 1.05rem;
+  font-weight: 700;
 }
-.agenda-item:last-child { border-bottom: none; }
-
-.agenda-item .time {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.78rem;
-  color: var(--aspen-deep);
-  font-weight: 600;
-  padding-top: 2px;
-}
-
-.agenda-item .what .session-title { font-weight: 600; color: var(--pine); font-size: 0.95rem; }
-.agenda-item .what a.session-title,
-.agenda-item .what a.session-speaker {
+.keynote .keynote-talk a {
+  color: var(--aspen);
   text-decoration: none;
 }
-.agenda-item .what a.session-title:hover,
-.agenda-item .what a.session-speaker:hover {
-  text-decoration: underline;
-}
-.agenda-item .what .session-speaker { color: var(--ink-muted); font-size: 0.82rem; margin-top: 2px; }
-.agenda-item .what .session-speaker a { color: inherit; text-decoration: none; font-weight: 600; }
-.agenda-item .what .session-speaker a:hover { text-decoration: underline; }
-.agenda-item.is-break .what .session-title { color: var(--ink-muted); font-weight: 500; font-style: italic; }
-
-.schedule-note {
-  margin-top: 22px;
-  font-size: 0.85rem;
-  color: var(--ink-muted);
-  background: var(--paper-alt);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 12px 16px;
-}
+.keynote .keynote-talk a:hover { text-decoration: underline; }
 
 /* ---------- Speakers grid ---------- */
 .speaker-grid {
@@ -635,6 +537,75 @@ img.speaker-avatar {
 /* ---------- Venue facts (two-up) ---------- */
 .venue-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
 @media (max-width: 760px) { .venue-facts { grid-template-columns: 1fr; } }
+
+
+/* ---------- Talk detail popup ---------- */
+.talk-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+.talk-modal.open { display: block; }
+
+.talk-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 22, 35, 0.65);
+}
+
+.talk-modal-box {
+  position: relative;
+  margin: 4vh auto;
+  width: min(920px, 92vw);
+  height: 88vh;
+  background: var(--paper);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+.talk-modal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--pine);
+  flex-shrink: 0;
+}
+
+.talk-modal-external {
+  color: #cfe6f4;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.talk-modal-external:hover { text-decoration: underline; }
+
+.talk-modal-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+.talk-modal-close:hover { background: rgba(255,255,255,0.15); }
+
+.talk-modal-box iframe {
+  flex-grow: 1;
+  width: 100%;
+  border: none;
+  background: #fff;
+}
+
+@media (max-width: 700px) {
+  .talk-modal-box { width: 96vw; height: 92vh; margin: 3vh auto; }
+}
 
 
 @media (prefers-reduced-motion: reduce) {
